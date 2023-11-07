@@ -14,4 +14,6 @@
     <color name="inviteButton">#9400FC</color>
     <color name="finderBack">#BF49F6</color>
     <color name="notImg">#A4A4A4</color>
+    <color name="radioBack">#EEEEEEEE</color>
+    <color name="invisivle_text">#00000000</color>
 </resources>

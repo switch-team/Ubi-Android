@@ -19,9 +19,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.ubi.R
 import com.example.ubi.databinding.FragmentFindBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
@@ -39,6 +43,7 @@ class FindFragment : Fragment() {
 
     private var _binding: FragmentFindBinding? = null
     private val binding get() = _binding!!
+
     private var latitude: Double = 35.663234224668415
     private var longitude = 128.4136357098649
 
@@ -53,6 +58,10 @@ class FindFragment : Fragment() {
     ): View {
         _binding = FragmentFindBinding.inflate(inflater, container, false)
         mapView = binding.mapView
+        binding.addArticleButton.setOnClickListener {
+            findNavController().navigate(R.id.action_findFragment_to_createFragment)
+            Log.d(TAG, "here is Find")
+        }
         binding.mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
                 //지도 API가 정상적으로 종료 될때 호출
@@ -132,8 +141,6 @@ class FindFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = _binding?.mapView
-
         viewModel.location.observe(viewLifecycleOwner) { location ->
             if (location != null) {
                 Log.d(TAG, "${location.latitude} - ${location.longitude}")

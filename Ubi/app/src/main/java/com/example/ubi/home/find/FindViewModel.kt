@@ -53,7 +53,7 @@ class FindViewModel : ViewModel() {
         })
     }
 
-    fun registPost() {
+    fun registPost(title:String, content:String, latitude: Double,longitude: Double) {
         val data = Gson().toJson(PostArticleRequest("TITLE", "content", 0.0, 0.0))
             .toRequestBody("application/json".toMediaType())
         ApiServer.boardApi.sendBoard(data).enqueue(object : Callback<Unit> {
@@ -90,4 +90,5 @@ class FindViewModel : ViewModel() {
         })
 
     }
+
 }

@@ -40,6 +40,12 @@ class PermissionFragment : Fragment() {
             permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
         if(PackageManager.PERMISSION_GRANTED != requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION))
             permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+        if(PackageManager.PERMISSION_GRANTED != requireActivity().checkSelfPermission(Manifest.permission.CAMERA))
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+        if(PackageManager.PERMISSION_GRANTED != requireActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+        if(PackageManager.PERMISSION_GRANTED != requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
 
         if(permissions.size == 0) {
             Log.d(TAG, "PermissionFragment")
