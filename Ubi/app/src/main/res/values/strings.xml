@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Ubi</string>
+    <string name="title_invite">invite</string>
+    <string name="title_notice">notice</string>
+    <string name="title_find">find</string>
+    <string name="title_profile">profile</string>
+    <string name="title_option">option</string>
+    <string name="title_activity_login">Login</string>
+    <string name="hello_blank_fragment"></string>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/permissionFragment">
+
+    <fragment
+        android:id="@+id/permissionFragment"
+        android:name="com.example.ubi.home.permission.PermissionFragment"
+        android:label="fragment_permission"
+        tools:layout="@layout/fragment_permission">
+        <action
+            android:id="@+id/action_permissionFragment_to_findFragment"
+            app:destination="@id/findFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/findFragment"
+        android:name="com.example.ubi.home.find.FindFragment"
+        android:label="@string/title_find"
+        tools:layout="@layout/fragment_find" />
+    <fragment
+        android:id="@+id/inviteFragment"
+        android:name="com.example.ubi.home.invite.InviteFragment"
+        android:label="@string/title_invite"
+        tools:layout="@layout/fragment_invite" />
+    <fragment
+        android:id="@+id/notionFragment"
+        android:name="com.example.ubi.home.notion.NotionFragment"
+        android:label="@string/title_notice"
+        tools:layout="@layout/fragment_notion" />
+    <fragment
+        android:id="@+id/optionFragment"
+        android:name="com.example.ubi.home.OptionFragment"
+        android:label="@string/title_option"
+        tools:layout="@layout/fragment_option" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.ubi.home.progile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
