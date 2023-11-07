@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".home.progile.ProfileFragment">
+    tools:context=".home.profile.ProfileFragment">
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuideline"
         android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="330dp" />
+            app:layout_constraintGuide_end="100dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/cardStartGuideline"
@@ -127,7 +127,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="100dp"/>
+
+            app:layout_constraintGuide_begin="330dp"
+
+            />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/idBottomGuideline"

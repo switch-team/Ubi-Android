@@ -67,7 +67,7 @@ object ApiModel {
 
         @GET("/article/{id}")
         fun checkBoard(
-            @Path(value = "id") id:Int
+            @Path(value = "id") id:String
         ):Call<GuidedResponse<CheckBoardResponse>>
 
         @Multipart

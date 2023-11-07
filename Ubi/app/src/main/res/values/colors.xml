@@ -13,4 +13,5 @@
     <color name="login">#8719F3</color>
     <color name="inviteButton">#9400FC</color>
     <color name="finderBack">#BF49F6</color>
+    <color name="notImg">#A4A4A4</color>
 </resources>

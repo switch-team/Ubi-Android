@@ -1,6 +1,7 @@
-package com.example.ubi.home.progile
+package com.example.ubi.home.profile
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ubi.api.ApiServer
@@ -16,6 +17,7 @@ import java.io.File
 
 class ProfileViewModel : ViewModel() {
     val TAG = "ProfileViewModel"
+    val userInfo = MutableLiveData<ProfileResponse>()
         fun getProfile() = viewModelScope.launch {
         val request = ApiServer.userApi.profileFind()
         request.enqueue(object: Callback<GuidedResponse<ProfileResponse>> {

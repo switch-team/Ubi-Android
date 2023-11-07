@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.ubi.api.ApiServer
 import com.example.ubi.api.request.PostArticleRequest
 import com.example.ubi.api.response.ArticleResponse
+import com.example.ubi.api.response.CheckBoardResponse
 import com.example.ubi.api.response.GuidedResponse
 import com.example.ubi.api.response.ProfileResponse
 import com.google.gson.Gson
@@ -24,9 +25,8 @@ class FindViewModel : ViewModel() {
     val TAG = "FindViewModel"
 
     val articleList = MutableLiveData<List<ArticleResponse>>()
+    val articleInfo = MutableLiveData<CheckBoardResponse>()
     val location = MutableLiveData<Location>();
-
-
 
     fun getPostList(latitude: Double, longitude: Double) = viewModelScope.launch {
         val request = ApiServer.boardApi.getBoardItemList(latitude, longitude)
@@ -66,5 +66,28 @@ class FindViewModel : ViewModel() {
             }
 
         })
+    }
+
+    fun getArticle(id : String){
+        val request = ApiServer.boardApi.checkBoard(id)
+        request.enqueue(object : Callback<GuidedResponse<CheckBoardResponse>>{
+            override fun onResponse(
+                call: Call<GuidedResponse<CheckBoardResponse>>,
+                response: Response<GuidedResponse<CheckBoardResponse>>
+            ) {
+                Log.d(TAG, "${response.code()} ${response.body()}")
+                if(response.isSuccessful){
+                    response.body()?.data?.let{
+                        articleInfo.value  = it
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GuidedResponse<CheckBoardResponse>>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
     }
 }

@@ -36,7 +36,7 @@
         tools:layout="@layout/fragment_option" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.ubi.home.progile.ProfileFragment"
+        android:name="com.example.ubi.home.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
