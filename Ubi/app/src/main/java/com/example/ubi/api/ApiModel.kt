@@ -25,6 +25,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.io.File
 
 object ApiModel {
     interface AuthApi {
@@ -74,7 +75,7 @@ object ApiModel {
         @POST("/article")
         fun sendBoard(
             @Part("data") createArticleRequest: RequestBody, // request
-            @Part("thumbnailImage") image: RequestBody? = null, // can be null
+            @Part image: MultipartBody.Part? = null, // can be null
         ): Call<Unit>
 
         @POST("/article/{id}/like")

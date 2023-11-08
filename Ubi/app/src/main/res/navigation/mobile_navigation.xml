@@ -42,7 +42,11 @@
         android:id="@+id/profileFragment"
         android:name="com.example.ubi.home.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_findFriendFragment"
+            app:destination="@id/findFriendFragment" />
+    </fragment>
     <fragment
         android:id="@+id/createFragment"
         android:name="com.example.ubi.home.find.CreateFragment"
@@ -51,5 +55,14 @@
         <action
             android:id="@+id/action_createFragment_to_findFragment"
             app:destination="@id/findFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/findFriendFragment"
+        android:name="com.example.ubi.home.profile.friend.FindFriendFragment"
+        android:label="fragment_find_friend"
+        tools:layout="@layout/fragment_find_friend" >
+        <action
+            android:id="@+id/action_findFriendFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

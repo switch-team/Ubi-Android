@@ -37,6 +37,7 @@ class FindViewModel : ViewModel() {
     val articleInfo = MutableLiveData<CheckBoardResponse>()
     val location = MutableLiveData<Location>()
     val file = MutableLiveData<Path>()
+    val fileName = MutableLiveData<String>()
 
     fun getPostList(latitude: Double, longitude: Double) = viewModelScope.launch {
         val request = ApiServer.boardApi.getBoardItemList(latitude, longitude)
@@ -72,7 +73,7 @@ class FindViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Log.d("TEST", "err", t)
+                Log.e("TEST", "err", t)
             }
 
         })
@@ -96,7 +97,6 @@ class FindViewModel : ViewModel() {
             override fun onFailure(call: Call<GuidedResponse<CheckBoardResponse>>, t: Throwable) {
 
             }
-
         })
 
     }
