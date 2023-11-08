@@ -45,7 +45,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/createFragment"
-        android:name="com.example.ubi.CreateFragment"
+        android:name="com.example.ubi.home.find.CreateFragment"
         android:label="fragment_create"
         tools:layout="@layout/fragment_create" >
         <action

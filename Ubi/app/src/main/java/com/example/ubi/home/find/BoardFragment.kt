@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.ubi.R
 
-class boardFragment : Fragment() {
+class BoardFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

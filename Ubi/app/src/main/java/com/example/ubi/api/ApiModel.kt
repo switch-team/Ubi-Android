@@ -74,7 +74,7 @@ object ApiModel {
         @POST("/article")
         fun sendBoard(
             @Part("data") createArticleRequest: RequestBody, // request
-            @Part("profileImage") image: RequestBody? = null, // can be null
+            @Part("thumbnailImage") image: RequestBody? = null, // can be null
         ): Call<Unit>
 
         @POST("/article/{id}/like")

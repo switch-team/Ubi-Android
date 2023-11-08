@@ -16,4 +16,6 @@
     <color name="notImg">#A4A4A4</color>
     <color name="radioBack">#EEEEEEEE</color>
     <color name="invisivle_text">#00000000</color>
+    <color name="article_content">#7F7F7F</color>
+    <color name="article_title">#C5C5C6</color>
 </resources>

@@ -1,6 +1,10 @@
 package com.example.ubi.home.find
 
+import android.content.Context
+import android.database.Cursor
 import android.location.Location
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,18 +19,24 @@ import com.google.gson.Gson
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMap.OnMapClickListener
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.nio.file.Path
 
 class FindViewModel : ViewModel() {
     val TAG = "FindViewModel"
 
     val articleList = MutableLiveData<List<ArticleResponse>>()
     val articleInfo = MutableLiveData<CheckBoardResponse>()
-    val location = MutableLiveData<Location>();
+    val location = MutableLiveData<Location>()
+    val file = MutableLiveData<Path>()
 
     fun getPostList(latitude: Double, longitude: Double) = viewModelScope.launch {
         val request = ApiServer.boardApi.getBoardItemList(latitude, longitude)
@@ -84,7 +94,7 @@ class FindViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<GuidedResponse<CheckBoardResponse>>, t: Throwable) {
-                TODO("Not yet implemented")
+
             }
 
         })

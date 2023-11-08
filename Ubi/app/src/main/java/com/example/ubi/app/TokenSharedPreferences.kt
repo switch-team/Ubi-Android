@@ -2,7 +2,9 @@ package com.example.ubi.app
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 
 class TokenSharedPreferences(context: Context) {
     private val prefsFilename = "token_prefs"

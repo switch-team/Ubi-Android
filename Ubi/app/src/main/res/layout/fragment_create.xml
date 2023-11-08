@@ -4,72 +4,115 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".CreateFragment">
-    <ImageView
-        android:id="@+id/icImg"
-        app:layout_constraintTop_toTopOf="100dp"
-        app:layout_constraintStart_toStartOf="100dp"
-        android:src="@drawable/ic_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@id/infoText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="게시물작성하기"/>
-
-
-    <EditText
-        android:padding="10dp"
-        android:drawableStart="@drawable/ic_account_box"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:hint="제목을 입력하세요"
-        android:background="@drawable/check"
-
-        android:id="@+id/tilteEdit"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-<!--    <ImageView-->
-<!--        android:id="@+id/imgView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tilteEdit"-->
-<!--        app:layout_constraintStart_toStartOf="@id/tilteEdit"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/tilteEdit"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/contentEdit"-->
-<!--        />-->
-    <EditText
-        android:layout_marginTop="40dp"
+    tools:context=".home.find.CreateFragment">
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/NestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="내용"
-        android:id="@+id/contentEdit"
-        android:inputType=""
-        android:background="@drawable/check"
-        app:layout_constraintTop_toBottomOf="@id/tilteEdit"
-        app:layout_constraintEnd_toEndOf="@id/tilteEdit"
-        app:layout_constraintStart_toStartOf="@id/tilteEdit"
-        app:layout_constraintBottom_toTopOf="@id/submitButton"/>
+        app:layout_constraintTop_toBottomOf="@id/infoText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <EditText
+                    android:id="@+id/titleEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/check"
+                    android:drawableStart="@drawable/ic_account_box"
+                    android:fontFamily="@font/pretendardmedium"
+                    android:hint="제목을 입력하세요"
+                    android:padding="10dp"
+                    android:textColor="@color/article_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <EditText
+                    android:id="@+id/contentEdit"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/check"
+                    android:fontFamily="@font/pretendardmedium"
+                    android:gravity="top"
+                    android:hint="짧은 글을 적어 주세요!"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:textColor="@color/article_content"
+                    app:layout_constraintBottom_toTopOf="@id/addImg"
+                    app:layout_constraintEnd_toEndOf="@id/titleEdit"
+                    app:layout_constraintStart_toStartOf="@id/titleEdit"
+                    app:layout_constraintTop_toBottomOf="@id/titleEdit" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/addImg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="40dp"
+                    android:text="이미지 선택하기"
+                    app:layout_constraintBottom_toTopOf="@id/imgView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/contentEdit" />
+
+                <ImageView
+                    android:id="@+id/imgView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/addImg" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/submitButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="25dp"
+        android:text="게시하기"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contentEdit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/addImg"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@id/infoText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="10dp"
+        android:fontFamily="@font/pretendardsemibold"
+        android:text="게시물 작성하기"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+
+        app:layout_constraintBottom_toTopOf="@id/NestedScrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="60dp"/>
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
 
 
 

@@ -12,20 +12,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.ubi.R
 import com.example.ubi.databinding.FragmentFindBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
@@ -52,6 +48,10 @@ class FindFragment : Fragment() {
 
     private val viewModel by activityViewModels<FindViewModel>()
 
+
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,7 +77,7 @@ class FindFragment : Fragment() {
             object : KakaoMapReadyCallback() {
                 override fun onMapReady(map: KakaoMap) {
                     kakaoMap = map
-
+                    makeLocation(latitude, longitude)
 
                     map.setOnLabelClickListener { kakaoMap, layer, label ->
                         val arr = label.styles.styleId.split("|")
@@ -123,7 +123,7 @@ class FindFragment : Fragment() {
                             .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
                             .fallback(defaultImage) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
                             .into(imgThumbnail) // 이미지를 넣을 뷰
-
+                        Log.d(TAG, "${article.thumbnailImage}")
                         dialog.show()
                     }
                 }
@@ -139,6 +139,7 @@ class FindFragment : Fragment() {
     }
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.location.observe(viewLifecycleOwner) { location ->
@@ -147,6 +148,7 @@ class FindFragment : Fragment() {
                 latitude = location.latitude
                 longitude = location.longitude
                 viewModel.getPostList(latitude, longitude)
+
             }
         }
 
@@ -169,7 +171,7 @@ class FindFragment : Fragment() {
     fun makeMarker(id: String, latitude: Double, longitude: Double, text: String? = null): Label {
         val styles = LabelStyles.from(
             id,
-            LabelStyle.from(R.drawable.marker_spot).setZoomLevel(8).setTextStyles(30, Color.BLACK)
+            LabelStyle.from(R.drawable.marker_spot).setZoomLevel(8).setTextStyles(10, Color.BLACK)
         )
         val options: LabelOptions = LabelOptions.from(LatLng.from(latitude, longitude))
             .setStyles(styles)
@@ -177,6 +179,21 @@ class FindFragment : Fragment() {
         val label = kakaoMap.labelManager!!.layer!!.addLabel(options)
         text?.let { label.changeText(it) }
         return label
+    }
+    fun makeLocation(latitude: Double, longitude: Double): Label {
+        val styles = LabelStyles.from(
+            "myLocation",
+            LabelStyle.from(R.drawable.my_location).setZoomLevel(8).setAnchorPoint(0.5F, 0.5F).setApplyDpScale(false)
+        )
+        val options: LabelOptions = LabelOptions.from(LatLng.from(latitude, longitude))
+            .setStyles(styles)
+            .setClickable(false)
+        return kakaoMap.labelManager!!.layer!!.addLabel(options)
+    }
+    fun updateLocation(latitude: Double, longitude: Double): Label{
+        val myLocation = kakaoMap.labelManager!!.layer!!.getLabel("myLocation")
+        myLocation.pathOptions.setPath(LatLng.from(latitude, longitude))
+        return myLocation
     }
 
     private val locationListener = object : LocationListener {
