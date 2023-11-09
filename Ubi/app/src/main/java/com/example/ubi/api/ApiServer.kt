@@ -16,7 +16,7 @@ import retrofit2.create
 class ApiServer {
     companion object {
         val TAG = "ApiServer"
-        private const val url = "https://6d15-220-89-69-2.ngrok-free.app"
+        private const val url = "https://12f5-220-89-69-2.ngrok-free.app"
         private val httpClient = OkHttpClient.Builder().apply {
             addInterceptor { chain ->
                 Log.i(TAG, "${chain.request()}")

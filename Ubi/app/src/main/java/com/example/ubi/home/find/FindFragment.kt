@@ -40,8 +40,8 @@ class FindFragment : Fragment() {
     private var _binding: FragmentFindBinding? = null
     private val binding get() = _binding!!
 
-    private var latitude: Double = 35.663234224668415
-    private var longitude = 128.4136357098649
+    private var latitude: Double = 35.907691243826584
+    private var longitude : Double  = 128.61267453961887
 
     private lateinit var mapView: MapView
     private lateinit var kakaoMap: KakaoMap
@@ -62,6 +62,9 @@ class FindFragment : Fragment() {
             findNavController().navigate(R.id.action_findFragment_to_createFragment)
             Log.d(TAG, "here is Find")
         }
+        viewModel.location.value?.latitude ?:  latitude
+        viewModel.location.value?.longitude ?:  longitude
+
         binding.mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
                 //지도 API가 정상적으로 종료 될때 호출
@@ -143,13 +146,13 @@ class FindFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.location.observe(viewLifecycleOwner) { location ->
-            if (location != null) {
-                Log.d(TAG, "${location.latitude} - ${location.longitude}")
-                latitude = location.latitude
-                longitude = location.longitude
+//            if (location = null) {
+//                Log.d(TAG, "${location.latitude} - ${location.longitude}")
+//                latitude = location.latitude
+//                longitude = location.longitude
                 viewModel.getPostList(latitude, longitude)
 
-            }
+//            }
         }
 
         if (ContextCompat.checkSelfPermission(
@@ -157,13 +160,16 @@ class FindFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
+            Log.d(TAG, "taest")
             var locationManager =
                 requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            Log.d(TAG, "tsdkfds")
             viewModel.location.value =
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER, 10000, 10.0f, locationListener
             )
+            Log.d(TAG, "taestkjlnsdflksfklskljfd")
         }
 
     }
@@ -188,6 +194,7 @@ class FindFragment : Fragment() {
         val options: LabelOptions = LabelOptions.from(LatLng.from(latitude, longitude))
             .setStyles(styles)
             .setClickable(false)
+        Log.d(TAG, "ok")
         return kakaoMap.labelManager!!.layer!!.addLabel(options)
     }
     fun updateLocation(latitude: Double, longitude: Double): Label{
@@ -198,24 +205,28 @@ class FindFragment : Fragment() {
 
     private val locationListener = object : LocationListener {
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            Log.d(TAG, "in location")
             super.onStatusChanged(provider, status, extras)
+            Log.e(TAG,"$provider")
             // provider의 상태가 변경될때마다 호출
             // deprecated
         }
 
         override fun onLocationChanged(location: Location) {
             // 위치 정보 전달 목적으로 호출(자동으로 호출)
+            Log.d(TAG, "in location")
             viewModel.location.value = location
-            Log.d("Location", "Latitude : ${location.latitude}, Longitude : ${location.longitude}")
         }
 
         override fun onProviderEnabled(provider: String) {
             super.onProviderEnabled(provider)
+            Log.d(TAG, "in location")
             // provider가 사용 가능한 생태가 되는 순간 호출
         }
 
         override fun onProviderDisabled(provider: String) {
             super.onProviderDisabled(provider)
+            Log.d(TAG, "in location")
             // provider가 사용 불가능 상황이 되는 순간 호출
         }
     }

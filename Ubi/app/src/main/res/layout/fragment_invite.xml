@@ -5,17 +5,24 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".home.invite.InviteFragment">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="70dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConstraintLayout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/editback"
+        android:layout_height="0dp"
+        android:background="@drawable/radio_background"
         android:padding="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         >
 
         <RadioGroup
@@ -23,36 +30,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkedButton="@id/invite"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:orientation="horizontal"
 
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <RadioButton
-                android:paddingEnd="10dp"
                 android:id="@+id/invite"
+                style="@style/radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/radio_text"
                 android:background="@drawable/invite_radio"
-                style="@style/radioButton"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
                 android:text="받은초대"
                 android:textAlignment="center"
-                />
+                android:textColor="@drawable/radio_text" />
 
             <RadioButton
                 android:id="@+id/receive"
+                style="@style/radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/radio_text"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/invite_radio"
-                style="@style/radioButton"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
                 android:text="보낸초대"
                 android:textAlignment="center"
-                android:layout_marginStart="10dp"
-                />
+                android:textColor="@drawable/radio_text" />
         </RadioGroup>
 
 

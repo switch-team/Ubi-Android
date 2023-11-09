@@ -1,6 +1,7 @@
 package com.example.ubi.home.profile.friend
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,10 +22,12 @@ class FindFriendFragment : Fragment() {
     private var _binding: FragmentFindFriendBinding? = null
     private lateinit var friendAdapter: FriendAdapter
     private val binding get() = _binding!!
+    val TAG ="FindFriendFragment"
 
 
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -37,12 +40,18 @@ class FindFriendFragment : Fragment() {
     private fun initInviteRecyclerView(){
         friendAdapter = FriendAdapter()
         friendAdapter.notifyItemRemoved(0)
-        for(i:Int in 0..viewModel.friendList.size){
-            friendAdapter.friendList = viewModel.friendList[i].toMutableList()
-            with(binding) {
-                recyclerView.adapter = friendAdapter
-                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        try{
+            for (i: Int in 0..viewModel.friendList.size) {
+                friendAdapter.friendList = viewModel.friendList[i].toMutableList()
+                with(binding) {
+                    recyclerView.adapter = friendAdapter
+                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                }
             }
         }
+        catch (e:Error){
+            Log.d(TAG, "$e")
+        }
+
     }
 }

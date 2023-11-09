@@ -64,6 +64,7 @@ class CreateFragment : Fragment() {
                 val filePath = "${requireContext().cacheDir.path}$sep$fileName"
                 Log.i("Kotlin", "Save Path: $filePath")
                 try {
+                    binding.imgView.load(uri)
                     val file = File(filePath)
                     val inputStream = requireContext().contentResolver.openInputStream(uri)
                     if(inputStream!=null) {
