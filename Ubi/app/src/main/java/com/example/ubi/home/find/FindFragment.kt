@@ -84,7 +84,6 @@ class FindFragment : Fragment() {
 
                     map.setOnLabelClickListener { kakaoMap, layer, label ->
                         val arr = label.styles.styleId.split("|")
-                        Log.d(TAG, "onMarkerClick [${label.styles.styleId}]")
                         when (arr[0]) {
                             "article" -> {
                                 // 서버에서 상세 내역 받기

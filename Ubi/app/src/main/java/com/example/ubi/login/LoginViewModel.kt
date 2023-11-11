@@ -47,7 +47,7 @@ class LoginViewModel : ViewModel() {
                     }
                     tokenPrefs.removeToken()
                     token.value = ""
-                    Log.d(TAG, "${token.value} djfsdkfj")
+                    Log.d(TAG, "${token.value}")
                     Log.d(TAG, "${response.code()} login")
                     Log.d(TAG, "${response.errorBody()?.string()}")
                 }

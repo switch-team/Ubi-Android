@@ -46,13 +46,14 @@ class CreateFragment : Fragment() {
     private val viewModel by activityViewModels<FindViewModel>()
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    val request = registerForActivityResult(ActivityResultContracts.GetContent()){ uri->
-        if(uri != null) {
+    val request = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
 
             // 파일 이름 알아내기
             val cursor = requireContext().contentResolver.query(
-                uri, null, null, null, null)
-            if(cursor!= null){
+                uri, null, null, null, null
+            )
+            if (cursor != null) {
                 val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 cursor.moveToFirst()
                 val fileName = cursor.getString(nameIndex)
@@ -67,8 +68,11 @@ class CreateFragment : Fragment() {
                     binding.imgView.load(uri)
                     val file = File(filePath)
                     val inputStream = requireContext().contentResolver.openInputStream(uri)
-                    if(inputStream!=null) {
-                        FileUtils.copy(inputStream, file.outputStream())
+                    if (inputStream != null) {
+                        file.outputStream().use {
+                            it.write(inputStream.readBytes())
+                            it.flush()
+                        }
                     }
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -80,18 +84,27 @@ class CreateFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentCreateBinding.inflate(inflater, container, false)
         binding.addImg.setOnClickListener {
             request.launch("image/*")
         }
         binding.submitButton.setOnClickListener {
             if (binding.titleEdit.text.isEmpty())
-                return@setOnClickListener Toast.makeText(requireContext(), "제목을 입력하여주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener Toast.makeText(
+                    requireContext(),
+                    "제목을 입력하여주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
             if (binding.contentEdit.text.isEmpty())
-                return@setOnClickListener Toast.makeText(requireContext(), "내용을 입력하여주세요.", Toast.LENGTH_SHORT).show()
-            val loc = viewModel.location.value ?: return@setOnClickListener Log.d(TAG, "Location not found.").let {}
+                return@setOnClickListener Toast.makeText(
+                    requireContext(),
+                    "내용을 입력하여주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            val loc = viewModel.location.value
+                ?: return@setOnClickListener Log.d(TAG, "Location not found.").let {}
             val body = PostArticleRequest(
                 binding.titleEdit.text.toString(),
                 binding.contentEdit.text.toString(),
@@ -99,32 +112,42 @@ class CreateFragment : Fragment() {
                 loc.longitude
             )
             val sep = File.separator
+            Log.d(
+                TAG,
+                "${binding.titleEdit.text}\n${binding.contentEdit.text}\n${loc.latitude}\n${loc.longitude}"
+            )
             val filePath = "${requireContext().cacheDir.path}$sep${viewModel.fileName.value}"
             Log.i("Kotlin", "Save Path: $filePath")
             try {
                 val file = File(filePath)
-            ApiServer.boardApi.sendBoard(
-                Gson().toJson(body).toRequestBody("application/json".toMediaType()),
-                getImageBody("thumbnailImage", file)
-            ).enqueue(object : Callback<Unit> {
-                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                ApiServer.boardApi.sendBoard(
+                    Gson().toJson(body).toRequestBody("application/json".toMediaType()),
+                    getImageBody("thumbnailImage", file)
+                ).enqueue(object : Callback<Unit> {
+                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
 
-                    if (!response.isSuccessful) {
-                        val data = response.errorBody()?.let { Gson().fromJson(it.toString(), GuidedResponse::class.java) }
-                        Toast.makeText(requireContext(), data?.message ?: "게시글 게시에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                        return
+                        if (!response.isSuccessful) {
+                            val data = response.errorBody()
+                                ?.let { Gson().fromJson(it.toString(), GuidedResponse::class.java) }
+                            Toast.makeText(
+                                requireContext(),
+                                data?.message ?: "게시글 게시에 실패하였습니다.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return
+                        }
+                        Log.d(TAG, "${viewModel.fileName.value}")
+                        Log.d(TAG, "게시 성공!")
+                        findNavController().navigate(R.id.action_createFragment_to_findFragment)
                     }
-                    Log.d(TAG, "${viewModel.fileName.value}")
-                    Log.d(TAG, "게시 성공!")
-                    findNavController().navigate(R.id.action_createFragment_to_findFragment)
-                }
 
-                override fun onFailure(call: Call<Unit>, t: Throwable) {
-                    Log.d(TAG, "Failed to send the article info", t)
-                    Toast.makeText(requireContext(), "게시글 게시에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-            })
-            }catch (e: IOException) {
+                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+                        Log.d(TAG, "Failed to send the article info", t)
+                        Toast.makeText(requireContext(), "게시글 게시에 실패하였습니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                })
+            } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
@@ -132,11 +155,11 @@ class CreateFragment : Fragment() {
         return binding.root
     }
 
-        fun getImageBody(key: String, file: File): MultipartBody.Part {
-            return MultipartBody.Part.createFormData(
-                name = key,
-                filename = file.name,
-                body = file.asRequestBody("image/*".toMediaType())
-            )
-        }
+    fun getImageBody(key: String, file: File): MultipartBody.Part {
+        return MultipartBody.Part.createFormData(
+            name = key,
+            filename = file.name,
+            body = file.asRequestBody("image/*".toMediaType())
+        )
+    }
 }

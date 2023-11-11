@@ -1,5 +1,6 @@
 package com.example.ubi.home.profile.friend
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ubi.api.ApiServer
@@ -11,6 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class FindFriendViewModel : ViewModel() {
+    val TAG = "FindFriendViewModel"
     var friendList = mutableListOf<List<FriendList>>()
 
     fun getFriendlist() = viewModelScope.launch {
@@ -26,7 +28,7 @@ class FindFriendViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<GuidedResponse<List<FriendList>>>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.d(TAG, "$t")
             }
 
         })

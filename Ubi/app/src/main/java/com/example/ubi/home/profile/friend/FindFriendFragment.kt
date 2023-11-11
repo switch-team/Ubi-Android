@@ -32,22 +32,22 @@ class FindFriendFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFindFriendBinding.inflate(inflater, container, false)
-
-        // Inflate the layout for this fragment
         initInviteRecyclerView()
         return binding.root
     }
     private fun initInviteRecyclerView(){
         friendAdapter = FriendAdapter()
         friendAdapter.notifyItemRemoved(0)
+        viewModel.getFriendlist()
         try{
-            for (i: Int in 0..viewModel.friendList.size) {
-                friendAdapter.friendList = viewModel.friendList[i].toMutableList()
-                with(binding) {
-                    recyclerView.adapter = friendAdapter
-                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                }
+            viewModel.friendList.forEach{
+                friendAdapter.friendList = it.toMutableList()
             }
+            with(binding) {
+                recyclerView.adapter = friendAdapter
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            }
+
         }
         catch (e:Error){
             Log.d(TAG, "$e")

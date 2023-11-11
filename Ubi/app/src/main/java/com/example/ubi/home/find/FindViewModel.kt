@@ -64,21 +64,6 @@ class FindViewModel : ViewModel() {
         })
     }
 
-    fun registPost(title:String, content:String, latitude: Double,longitude: Double) {
-        val data = Gson().toJson(PostArticleRequest("TITLE", "content", 0.0, 0.0))
-            .toRequestBody("application/json".toMediaType())
-        ApiServer.boardApi.sendBoard(data).enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                Log.d("TEST", response.body().toString())
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Log.e("TEST", "err", t)
-            }
-
-        })
-    }
-
     fun getArticle(id : String){
         val request = ApiServer.boardApi.checkBoard(id)
         request.enqueue(object : Callback<GuidedResponse<CheckBoardResponse>>{
