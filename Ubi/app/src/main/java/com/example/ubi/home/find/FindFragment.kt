@@ -60,10 +60,7 @@ class FindFragment : Fragment() {
         mapView = binding.mapView
         binding.addArticleButton.setOnClickListener {
             findNavController().navigate(R.id.action_findFragment_to_createFragment)
-            Log.d(TAG, "here is Find")
         }
-        viewModel.location.value?.latitude ?:  latitude
-        viewModel.location.value?.longitude ?:  longitude
 
         binding.mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
@@ -91,9 +88,20 @@ class FindFragment : Fragment() {
                             }
                         }
                     }
+                    viewModel.location.observe(viewLifecycleOwner) { location ->
+                        if (location != null) {
+                            Log.d(TAG, "${location.latitude} - ${location.longitude}")
+                            latitude = location.latitude
+                            longitude = location.longitude
+                            viewModel.getPostList(latitude, longitude)
+                            updateLocation()
+
+                        }
+                    }
+
                     viewModel.articleList.observe(viewLifecycleOwner) { list ->
                         list.forEach {
-                            Log.d(TAG, "${it.title}")
+
                             makeMarker("article|${it.id}", it.latitude, it.longitude, it.title)
                         }
                     }
@@ -144,31 +152,23 @@ class FindFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.location.observe(viewLifecycleOwner) { location ->
-//            if (location = null) {
-//                Log.d(TAG, "${location.latitude} - ${location.longitude}")
-//                latitude = location.latitude
-//                longitude = location.longitude
-                viewModel.getPostList(latitude, longitude)
-
-//            }
-        }
 
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d(TAG, "taest")
+
             var locationManager =
                 requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            Log.d(TAG, "tsdkfds")
+
             viewModel.location.value =
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 10000, 10.0f, locationListener
+                LocationManager.GPS_PROVIDER, 100, 10.0f, locationListener
             )
-            Log.d(TAG, "taestkjlnsdflksfklskljfd")
+            Log.d(TAG, "${viewModel.location.value}")
+
         }
 
     }
@@ -188,17 +188,20 @@ class FindFragment : Fragment() {
     fun makeLocation(latitude: Double, longitude: Double): Label {
         val styles = LabelStyles.from(
             "myLocation",
-            LabelStyle.from(R.drawable.my_location).setZoomLevel(8).setAnchorPoint(0.5F, 0.5F).setApplyDpScale(false)
+            LabelStyle.from(R.drawable.my_location).setZoomLevel(8).setAnchorPoint(0.5F, 0.5F)
+                .setApplyDpScale(false)
         )
         val options: LabelOptions = LabelOptions.from(LatLng.from(latitude, longitude))
             .setStyles(styles)
             .setClickable(false)
-        Log.d(TAG, "ok")
-        return kakaoMap.labelManager!!.layer!!.addLabel(options)
+        val myLabel = kakaoMap.labelManager!!.layer!!.addLabel(options)
+        viewModel.myLableId.value = myLabel.labelId
+        return myLabel
     }
-    fun updateLocation(latitude: Double, longitude: Double): Label{
-        val myLocation = kakaoMap.labelManager!!.layer!!.getLabel("myLocation")
-        myLocation.pathOptions.setPath(LatLng.from(latitude, longitude))
+    fun updateLocation(): Label{
+        val myLocation = kakaoMap.labelManager!!.layer!!.getLabel(viewModel.myLableId.value)
+        Log.d(TAG, "${myLocation.position}")
+        myLocation.moveTo(LatLng.from(viewModel.location.value!!.latitude, viewModel.location.value!!.longitude))
         return myLocation
     }
 
@@ -213,19 +216,17 @@ class FindFragment : Fragment() {
 
         override fun onLocationChanged(location: Location) {
             // 위치 정보 전달 목적으로 호출(자동으로 호출)
-            Log.d(TAG, "in location")
             viewModel.location.value = location
         }
 
         override fun onProviderEnabled(provider: String) {
             super.onProviderEnabled(provider)
-            Log.d(TAG, "in location")
             // provider가 사용 가능한 생태가 되는 순간 호출
         }
 
         override fun onProviderDisabled(provider: String) {
             super.onProviderDisabled(provider)
-            Log.d(TAG, "in location")
+
             // provider가 사용 불가능 상황이 되는 순간 호출
         }
     }

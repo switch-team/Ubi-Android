@@ -38,6 +38,7 @@ class FindViewModel : ViewModel() {
     val location = MutableLiveData<Location>()
     val file = MutableLiveData<Path>()
     val fileName = MutableLiveData<String>()
+    val myLableId = MutableLiveData<String>()
 
     fun getPostList(latitude: Double, longitude: Double) = viewModelScope.launch {
         val request = ApiServer.boardApi.getBoardItemList(latitude, longitude)

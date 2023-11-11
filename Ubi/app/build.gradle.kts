@@ -44,6 +44,9 @@ android {
 }
 
 dependencies {
+    val work_version = "2.7.1"
+    implementation ("androidx.work:work-runtime-ktx:$work_version")
+
     implementation ("com.github.bumptech.glide:glide:4.10.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.10.0")
     implementation("io.coil-kt:coil:2.0.0-rc03")
