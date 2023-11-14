@@ -28,7 +28,6 @@ class PermissionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "dsfjkdfjlsdfjsdlfjsdfjsdfsdlfsjfsdf")
         return inflater.inflate(R.layout.fragment_permission, container, false)
     }
 
@@ -40,18 +39,17 @@ class PermissionFragment : Fragment() {
             permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
         if(PackageManager.PERMISSION_GRANTED != requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION))
             permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
-        if(PackageManager.PERMISSION_GRANTED != requireActivity().checkSelfPermission(Manifest.permission.CAMERA))
-            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
-        if(PackageManager.PERMISSION_GRANTED != requireActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
-            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
-        if(PackageManager.PERMISSION_GRANTED != requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+        if(PackageManager.PERMISSION_GRANTED != requireActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS))
+            permissions.add(Manifest.permission.READ_CONTACTS)
 
         if(permissions.size == 0) {
             Log.d(TAG, "PermissionFragment")
             findNavController().navigate(R.id.action_permissionFragment_to_findFragment)
         }
-        else
+        else {
+            Log.d(TAG, "${permissions.size}")
             request.launch(permissions.toTypedArray())
+        }
+
     }
 }

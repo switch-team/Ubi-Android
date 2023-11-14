@@ -1,4 +1,4 @@
-package com.example.ubi.login
+package com.example.ubi.login.login
 
 import android.content.Intent
 import android.os.Bundle

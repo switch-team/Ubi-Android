@@ -34,7 +34,7 @@ class FindViewModel : ViewModel() {
     val TAG = "FindViewModel"
 
     val articleList = MutableLiveData<List<ArticleResponse>>()
-    val articleInfo = MutableLiveData<CheckBoardResponse>()
+    val articleInfo = MutableLiveData<CheckBoardResponse?>()
     val location = MutableLiveData<Location>()
     val file = MutableLiveData<Path>()
     val fileName = MutableLiveData<String>()

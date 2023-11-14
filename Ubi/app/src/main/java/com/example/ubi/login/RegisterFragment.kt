@@ -1,7 +1,5 @@
 package com.example.ubi.login
 
-import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.ubi.R
 import com.example.ubi.databinding.FragmentRegisterBinding
-import com.example.ubi.home.HomeActivity
+import com.example.ubi.login.login.LoginViewModel
 
 class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null

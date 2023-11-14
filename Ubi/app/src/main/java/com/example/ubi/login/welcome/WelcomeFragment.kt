@@ -1,4 +1,4 @@
-package com.example.ubi.login
+package com.example.ubi.login.welcome
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.ubi.R
 import com.example.ubi.databinding.FragmentWelcomeBinding
 import com.example.ubi.home.HomeActivity
+import com.example.ubi.login.login.LoginViewModel
 
 class WelcomeFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package com.example.ubi.login
+package com.example.ubi.login.login
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -10,19 +10,10 @@ import com.example.ubi.api.response.GuidedResponse
 import com.example.ubi.api.response.RegisterResponse
 import com.example.ubi.api.response.TokenResponse
 import com.example.ubi.app.App
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.stream.JsonWriter
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class LoginViewModel : ViewModel() {
     val TAG = "LoginViewModel"

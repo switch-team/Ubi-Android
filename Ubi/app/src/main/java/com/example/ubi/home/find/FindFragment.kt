@@ -1,23 +1,28 @@
 package com.example.ubi.home.find
 
 import android.Manifest
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.ubi.R
@@ -49,13 +54,16 @@ class FindFragment : Fragment() {
     private val viewModel by activityViewModels<FindViewModel>()
 
 
+    override fun onStart() {
 
-
+        super.onStart()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentFindBinding.inflate(inflater, container, false)
         mapView = binding.mapView
         binding.addArticleButton.setOnClickListener {
@@ -71,7 +79,7 @@ class FindFragment : Fragment() {
 
             override fun onMapError(error: Exception?) {
                 //인증 실패 및 지도 사용 중 애러가 발생할떄
-                Log.e("지도", "애러 : ${error?.message.toString()}")
+                Log.e("지도", "애러 : ${error?.message}")
             }
         },
             object : KakaoMapReadyCallback() {
@@ -111,30 +119,35 @@ class FindFragment : Fragment() {
 
                     Log.d("지도", "성공")
 
-
+                    Log.d(TAG, "value : ${viewModel.articleInfo.equals(viewModel.articleInfo)}")
                     viewModel.articleInfo.observe(viewLifecycleOwner) { article ->
-                        Log.d(TAG, "Select Article: ${article}")
-                        val layoutInflater = LayoutInflater.from(requireContext())
-                        val view = layoutInflater.inflate(R.layout.dialog_article, null)
-                        val builder = AlertDialog.Builder(requireContext())
-                            .setView(view)
-                            .setPositiveButton("나가기"){di, i-> di.dismiss()}
-                        val dialog = builder.create()
-                        val textTitle = view.findViewById<TextView>(R.id.titleText)
-                        val textContent = view.findViewById<TextView>(R.id.contentText)
-                        val imgThumbnail = view.findViewById<ImageView>(R.id.imgView)
-                        val defaultImage = R.drawable.not_img
+                        if(viewModel.articleInfo.value != null) {
+                            Log.d(TAG, "Select Article: ${article}")
+                            val layoutInflater = LayoutInflater.from(requireContext())
+                            val view = layoutInflater.inflate(R.layout.dialog_article, null)
+                            val builder = AlertDialog.Builder(requireContext())
+                                .setView(view)
+                                .setPositiveButton("나가기") { di, i ->
+                                    di.dismiss()
+                                    Log.d(TAG, "test")
+                                }
+                            val dialog = builder.create()
+                            val textTitle = view.findViewById<TextView>(R.id.titleText)
+                            val textContent = view.findViewById<TextView>(R.id.contentText)
+                            val imgThumbnail = view.findViewById<ImageView>(R.id.imgView)
+                            val defaultImage = R.drawable.not_img
 
-                        textTitle.text = article.title
-                        textContent.text = article.content
-                        Glide.with(requireContext())
-                            .load(article.thumbnailImage) // 불러올 이미지 url
-                            .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
-                            .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
-                            .fallback(defaultImage) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
-                            .into(imgThumbnail) // 이미지를 넣을 뷰
-                        Log.d(TAG, "${article.thumbnailImage}")
-                        dialog.show()
+                            textTitle.text = article?.title
+                            textContent.text = article?.content
+                            Glide.with(requireContext())
+                                .load(article?.thumbnailImage) // 불러올 이미지 url
+                                .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+                                .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+                                .fallback(defaultImage) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
+                                .into(imgThumbnail) // 이미지를 넣을 뷰
+                            Log.d(TAG, "${article?.thumbnailImage}")
+                            dialog.show()
+                        }
                     }
                 }
 
@@ -209,7 +222,6 @@ class FindFragment : Fragment() {
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
             Log.d(TAG, "in location")
             super.onStatusChanged(provider, status, extras)
-            Log.e(TAG,"$provider")
             // provider의 상태가 변경될때마다 호출
             // deprecated
         }
@@ -229,5 +241,11 @@ class FindFragment : Fragment() {
 
             // provider가 사용 불가능 상황이 되는 순간 호출
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy")
+        viewModel.articleInfo.value = null
     }
 }

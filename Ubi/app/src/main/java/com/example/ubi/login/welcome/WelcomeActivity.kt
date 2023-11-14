@@ -1,14 +1,9 @@
-package com.example.ubi.login
+package com.example.ubi.login.welcome
 
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ubi.databinding.ActivityWelcomeBinding
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
+
 
 
 class WelcomeActivity : AppCompatActivity() {
