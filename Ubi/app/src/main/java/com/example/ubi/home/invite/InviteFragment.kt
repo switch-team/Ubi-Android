@@ -1,10 +1,14 @@
 package com.example.ubi.home.invite
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +19,10 @@ class InviteFragment : Fragment() {
     private var _binding: FragmentInviteBinding? = null
     private lateinit var inviteAdapter: InviteAdapter
     private lateinit var receiveAdapter: ReceiveAdapter
+
+
+    lateinit var requestLauncher: ActivityResultLauncher<Intent>
+
     private val binding get() = _binding!!
     val inviteItemList = mutableListOf<InviteDataModel>()
     val receiveItemList = mutableListOf<InviteDataModel>()
@@ -38,6 +46,24 @@ class InviteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, binding.invite.isChecked.toString())
+        requestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val cursor = ContactDataModel.query(
+                it.data!!.data!!,
+                arrayOf<String>(
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                    ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ),
+                null,
+                null,
+                null
+            )
+            Log.d("test", "cursor size : ${cursor?.count}")
+        }
+
+        val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+        requestLauncher.launch(intent)
+
+
         binding.radioGroup.setOnCheckedChangeListener { radioGroup, checkId ->
             when(checkId){
                 binding.invite.id -> {
