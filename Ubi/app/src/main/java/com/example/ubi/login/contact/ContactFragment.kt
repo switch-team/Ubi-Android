@@ -31,6 +31,8 @@ class ContactFragment : Fragment() {
             }
         }
 
+
+                // 주소록 앱 실행
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
         requestLauncher.launch(intent)
 

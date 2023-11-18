@@ -1,24 +1,31 @@
 package com.example.ubi.home.invite
 
+import android.app.Activity
 import android.content.Intent
+import android.database.Cursor
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.Loader
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ubi.databinding.FragmentInviteBinding
 
-class InviteFragment : Fragment() {
+
+class InviteFragment : Fragment(){
     private val viewModel by activityViewModels<InviteViewModel>()
     private var _binding: FragmentInviteBinding? = null
     private lateinit var inviteAdapter: InviteAdapter
     private lateinit var receiveAdapter: ReceiveAdapter
+
 
 
     lateinit var requestLauncher: ActivityResultLauncher<Intent>
@@ -38,18 +45,19 @@ class InviteFragment : Fragment() {
 //        Log.d(TAG, binding.invite.isChecked.toString())
         binding.radioGroup.check(binding.invite.id)
         initInviteRecyclerView()
-        Log.d(TAG,viewModel.getInviteList().toString())
-
 
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, binding.invite.isChecked.toString())
+
         requestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            val cursor = ContactDataModel.query(
+            Log.d(TAG, "test")
+            Log.d(TAG, "${it.data!!.data!!.path}")
+            val cursor = requireContext().contentResolver.query(
                 it.data!!.data!!,
-                arrayOf<String>(
+                arrayOf(
                     ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
                     ContactsContract.CommonDataKinds.Phone.NUMBER,
                 ),
@@ -57,10 +65,12 @@ class InviteFragment : Fragment() {
                 null,
                 null
             )
-            Log.d("test", "cursor size : ${cursor?.count}")
+            Log.d(TAG, "${cursor}")
+
         }
 
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+        Log.d(TAG, "${intent.data}")
         requestLauncher.launch(intent)
 
 
