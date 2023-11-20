@@ -28,7 +28,6 @@ class InviteFragment : Fragment(){
 
 
 
-    lateinit var requestLauncher: ActivityResultLauncher<Intent>
 
     private val binding get() = _binding!!
     val inviteItemList = mutableListOf<InviteDataModel>()
@@ -51,28 +50,6 @@ class InviteFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            Log.d(TAG, "test")
-            Log.d(TAG, "${it.data!!.data!!.path}")
-            val cursor = requireContext().contentResolver.query(
-                it.data!!.data!!,
-                arrayOf(
-                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                    ContactsContract.CommonDataKinds.Phone.NUMBER,
-                ),
-                null,
-                null,
-                null
-            )
-            Log.d(TAG, "${cursor}")
-
-        }
-
-        val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
-        Log.d(TAG, "${intent.data}")
-        requestLauncher.launch(intent)
-
 
         binding.radioGroup.setOnCheckedChangeListener { radioGroup, checkId ->
             when(checkId){
