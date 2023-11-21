@@ -21,7 +21,8 @@ class PermissionFragment : Fragment() {
             if(!it.value)
                 requireActivity().finish()
         }
-        findNavController().navigate(R.id.action_permissionFragment_to_findFragment)
+        Log.d(TAG, "forEach")
+        findNavController().navigate(R.id.action_permissionFragment_to_welcomeFragment)
     }
 
     override fun onCreateView(
@@ -44,7 +45,7 @@ class PermissionFragment : Fragment() {
 
         if(permissions.size == 0) {
             Log.d(TAG, "PermissionFragment")
-            findNavController().navigate(R.id.action_permissionFragment_to_findFragment)
+            findNavController().navigate(R.id.action_permissionFragment_to_welcomeFragment)
         }
         else {
             Log.d(TAG, "${permissions.size}")

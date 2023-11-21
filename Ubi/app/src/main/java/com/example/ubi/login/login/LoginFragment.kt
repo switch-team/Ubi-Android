@@ -2,11 +2,14 @@ package com.example.ubi.login.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.example.ubi.R
 import com.example.ubi.databinding.FragmentLoginBinding
 import com.example.ubi.home.HomeActivity
 
@@ -38,8 +41,15 @@ class LoginFragment : Fragment() {
         }
         viewModel.token.observe(viewLifecycleOwner) { token ->
             if (token.isNotEmpty()) {
-                startActivity(Intent(requireContext(), HomeActivity::class.java))
-                requireActivity().finish()
+                Log.d(TAG,"test")
+                if(true){
+                    Log.d(TAG,"test")
+                    findNavController().navigate(R.id.action_loginFragment_to_contactFragment)
+                }
+                else{
+                    startActivity(Intent(requireContext(), HomeActivity::class.java))
+                    requireActivity().finish()
+                }
             }
         }
     }

@@ -1,21 +1,18 @@
 package com.example.ubi.home.invite
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.Loader
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ubi.databinding.FragmentInviteBinding
 
@@ -26,16 +23,13 @@ class InviteFragment : Fragment(){
     private lateinit var inviteAdapter: InviteAdapter
     private lateinit var receiveAdapter: ReceiveAdapter
 
-
-
-
     private val binding get() = _binding!!
     val inviteItemList = mutableListOf<InviteDataModel>()
     val receiveItemList = mutableListOf<InviteDataModel>()
     val TAG = "InviteFragment"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         inviteItemList.add(InviteDataModel("tester", "대기중"))
         receiveItemList.add(InviteDataModel("tester", "빨리와"))
@@ -50,7 +44,6 @@ class InviteFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.radioGroup.setOnCheckedChangeListener { radioGroup, checkId ->
             when(checkId){
                 binding.invite.id -> {
@@ -65,6 +58,7 @@ class InviteFragment : Fragment(){
             }
         }
     }
+
     private fun initInviteRecyclerView(){
         inviteAdapter = InviteAdapter()
         inviteAdapter.notifyItemRemoved(0)

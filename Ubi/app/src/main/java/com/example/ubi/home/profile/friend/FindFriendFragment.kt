@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ubi.R
 import com.example.ubi.api.response.FriendList
@@ -33,6 +35,9 @@ class FindFriendFragment : Fragment() {
     ): View? {
         _binding = FragmentFindFriendBinding.inflate(inflater, container, false)
         initInviteRecyclerView()
+        binding.findFreiendButton.setOnClickListener{
+            findNavController().navigate(R.id.action_findFriendFragment_to_contactFragment2)
+        }
         return binding.root
     }
     private fun initInviteRecyclerView(){

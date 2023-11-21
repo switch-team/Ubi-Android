@@ -39,10 +39,10 @@ class WelcomeFragment : Fragment() {
 
         viewModel.loginCheck()
         viewModel.checkedLogin.observe(viewLifecycleOwner) {
-            if(it or true)
+            if(it)
                 startActivity(Intent(requireContext(), HomeActivity::class.java))
             else
-                Log.d("Login", "NotChecked")
+                Log.d("TAG", "NotChecked")
         }
 
         binding.loginBtn.setOnClickListener {
