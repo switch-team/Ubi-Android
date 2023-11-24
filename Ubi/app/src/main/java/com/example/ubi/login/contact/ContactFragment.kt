@@ -5,7 +5,7 @@ import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.provider.OpenableColumns
+import android.provider.ContactsContract.Contacts
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,19 +20,21 @@ import com.example.ubi.databinding.FragmentContactBinding
 
 class ContactFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     private lateinit var mLoader: Any
+    private var forSendServer = arrayListOf<String>()
     private var _binding: FragmentContactBinding? = null
     private val binding get() = _binding!!
+
 
     private val DETAILS_QUERY_ID: Int = 0
     @SuppressLint("InlinedApi")
     private val PROJECTION: Array<out String> = arrayOf(
-        ContactsContract.Contacts._ID,
-        ContactsContract.Contacts.LOOKUP_KEY,
+        Contacts._ID,
+        Contacts.LOOKUP_KEY,
         ContactsContract.CommonDataKinds.Phone.NUMBER,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY
+            Contacts.DISPLAY_NAME_PRIMARY
         else
-            ContactsContract.Contacts.DISPLAY_NAME
+            Contacts.DISPLAY_NAME
     )
 
 
@@ -70,6 +72,7 @@ class ContactFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         return mLoader as CursorLoader
     }
 
+
     override fun onLoaderReset(loader: Loader<Cursor>) {
         when (loader.id) {
             DETAILS_QUERY_ID -> {
@@ -85,13 +88,24 @@ class ContactFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        Log.d(TAG, "$id ")
         when(loader.id) {
             DETAILS_QUERY_ID -> {
                 data!!.use { cursor ->
                     cursor.moveToFirst()
-                    val nameIndex = cursor.getColumnIndex(ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY)
-                    Log.d(TAG, "${cursor.getString(2)} ${cursor.getString(3)}")
+                    while (cursor.moveToNext()){
+                        if(cursor.isLast){
+                            break
+                        }
+                        val phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                        val phoneNumber = cursor.getString(phoneIndex)
+                        if (phoneNumber != null){
+                            if(phoneNumber.contains("010")){
+                                Log.d(TAG, phoneNumber)
+                                forSendServer.add(phoneNumber)
+                            }
+                        }
+                    }
+                    Log.d(TAG, "$forSendServer")
                 }
 
             }

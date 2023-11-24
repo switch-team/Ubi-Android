@@ -17,8 +17,39 @@ import androidx.lifecycle.viewModelScope
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
+import com.example.ubi.api.ApiServer
+import com.example.ubi.api.request.UserCheckRequest
+import com.example.ubi.api.response.GuidedResponse
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ContactViewModel:ViewModel() {
+    val TAG = "ContactViewModel"
+    val responseCheckUser = MutableLiveData<List<UserCheckRequest>?>()
+    fun userCheck(getUserList:List<String>)=viewModelScope.launch{
+        val request = ApiServer.userApi.userCheck(getUserList)
+        request.enqueue(object : Callback<GuidedResponse<List<UserCheckRequest>>>{
+            override fun onResponse(
+                call: Call<GuidedResponse<List<UserCheckRequest>>>,
+                response: Response<GuidedResponse<List<UserCheckRequest>>>,
+            ) {
+                if(response.body() != null){
+                    responseCheckUser.value = response.body()!!.data
+                }
+                else{
+                    Log.d(TAG, "${response.code()} ${response.body()}")
+                }
+            }
 
+            override fun onFailure(
+                call: Call<GuidedResponse<List<UserCheckRequest>>>,
+                t: Throwable,
+            ) {
+                Log.d(TAG, "failure", t)
+            }
+
+        })
+    }
 }

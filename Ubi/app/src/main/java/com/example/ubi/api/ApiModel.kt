@@ -2,6 +2,7 @@ package com.example.ubi.api
 
 import android.devicelock.DeviceId
 import com.example.ubi.api.request.LoginRequest
+import com.example.ubi.api.request.UserCheckRequest
 import com.example.ubi.api.response.ArticleResponse
 import com.example.ubi.api.response.CheckBoardResponse
 import com.example.ubi.api.response.FindUser
@@ -56,7 +57,10 @@ object ApiModel {
             @Part("data") correctionUserRequest: RequestBody, // request
             @Part("profileImage") image: RequestBody
         ):Call<Unit>
-
+        @POST("/user/check")
+        fun userCheck(
+            @Body request: List<String>
+        ):Call<GuidedResponse<List<UserCheckRequest>>>
     }
 
     interface BoardApi{
