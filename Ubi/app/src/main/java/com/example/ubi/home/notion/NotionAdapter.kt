@@ -7,13 +7,11 @@ import com.example.ubi.databinding.NotionItemBinding
 
 class NotionAdapter(
 ) : RecyclerView.Adapter<NotionAdapter.MyViewHolder>() {
-    var notionList = mutableListOf<NotionDataModel>()
+    var contactList = mutableListOf<String>()
 
     inner class MyViewHolder(private val binding: NotionItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(recyclerModel: NotionDataModel) {
-            binding.nameText.text = recyclerModel.title
-            binding.contentText.text = recyclerModel.contents
-
+        fun bind(recyclerModel: String) {
+            binding.contentText.text = recyclerModel
         }
 
     }
@@ -24,9 +22,9 @@ class NotionAdapter(
     }
 
 
-    override fun getItemCount() = notionList.size
+    override fun getItemCount() = contactList.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(notionList[position])
+        holder.bind(contactList[position])
     }
 }

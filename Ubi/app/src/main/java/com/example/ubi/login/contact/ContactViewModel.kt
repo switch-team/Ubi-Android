@@ -27,8 +27,9 @@ import retrofit2.Response
 
 class ContactViewModel:ViewModel() {
     val TAG = "ContactViewModel"
-    val responseCheckUser = MutableLiveData<List<UserCheckRequest>?>()
-    fun userCheck(getUserList:List<String>)=viewModelScope.launch{
+    val responseCheckUser = MutableLiveData<ArrayList<UserCheckRequest>>()
+    val sendFriendList = MutableLiveData<ArrayList<String>>()
+    fun userCheck(getUserList:List<UserCheckRequest>)=viewModelScope.launch{
         val request = ApiServer.userApi.userCheck(getUserList)
         request.enqueue(object : Callback<GuidedResponse<List<UserCheckRequest>>>{
             override fun onResponse(
@@ -36,7 +37,7 @@ class ContactViewModel:ViewModel() {
                 response: Response<GuidedResponse<List<UserCheckRequest>>>,
             ) {
                 if(response.body() != null){
-                    responseCheckUser.value = response.body()!!.data
+                    responseCheckUser.value = response.body()!!.data as ArrayList<UserCheckRequest>?
                 }
                 else{
                     Log.d(TAG, "${response.code()} ${response.body()}")

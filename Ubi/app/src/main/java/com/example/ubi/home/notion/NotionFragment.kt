@@ -32,7 +32,7 @@ class NotionFragment : Fragment() {
     private fun initNotionRecyclerView(){
         notionAdapter = NotionAdapter()
         notionAdapter.notifyItemRemoved(0)
-        notionAdapter.notionList = notionItemList
+//        notionAdapter.notionList = notionItemList
         with(binding) {
             recyclerView.adapter = notionAdapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())

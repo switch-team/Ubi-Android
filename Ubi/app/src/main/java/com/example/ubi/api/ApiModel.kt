@@ -59,7 +59,7 @@ object ApiModel {
         ):Call<Unit>
         @POST("/user/check")
         fun userCheck(
-            @Body request: List<String>
+            @Body request: List<UserCheckRequest>
         ):Call<GuidedResponse<List<UserCheckRequest>>>
     }
 

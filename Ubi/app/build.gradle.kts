@@ -44,6 +44,8 @@ android {
 }
 
 dependencies {
+    implementation ("io.socket:socket.io-client:2.0.0")
+
     val work_version = "2.7.1"
     implementation ("androidx.work:work-runtime-ktx:$work_version")
 
